@@ -33,7 +33,7 @@ INSTALLED_APPS = [
     "corsheaders",
     # Local apps
     "apps.users",
-    "apps.kis_accounts",
+    "apps.kis_account",
 ]
 
 MIDDLEWARE = [
