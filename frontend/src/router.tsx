@@ -4,7 +4,7 @@ import { useAuth } from "@/hooks/useAuth"
 
 // Lazy load components
 const DashboardLayout = lazy(() =>
-  import("@/components/dashboard-layout").then((m) => ({ default: m.DashboardLayout }))
+  import("@/layout/dashboard-layout").then((m) => ({ default: m.DashboardLayout }))
 )
 const LoginPage = lazy(() => import("@/pages/login").then((m) => ({ default: m.LoginPage })))
 const DashboardPage = lazy(() =>
