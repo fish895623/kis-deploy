@@ -80,20 +80,11 @@ sudo systemctl daemon-reload
 sudo systemctl enable kis-backend
 sudo systemctl start kis-backend
 
-# Setup systemd auto-update timer
-echo "Configuring auto-update timer (every 1 hour)..."
-sudo cp /var/www/kis/deploy/kis-update.service /etc/systemd/system/
-sudo cp /var/www/kis/deploy/kis-update.timer /etc/systemd/system/
-sudo systemctl daemon-reload
-sudo systemctl enable kis-update.timer
-sudo systemctl start kis-update.timer
-
 echo ""
 echo "=== Setup Complete ==="
 echo ""
 echo "Services Status:"
 sudo systemctl status kis-backend --no-pager || true
-sudo systemctl status kis-update.timer --no-pager || true
 echo ""
 echo "Next steps:"
 echo "1. Create /var/www/kis/backend/.env file with your environment variables:"
@@ -103,10 +94,9 @@ echo ""
 echo "2. Restart the backend after creating .env:"
 echo "   sudo systemctl restart kis-backend"
 echo ""
+echo "3. Add LIGHTSAIL_SSH_KEY secret to GitHub repository for CI/CD deployment"
+echo ""
 echo "Commands:"
 echo "  - View backend logs: sudo journalctl -u kis-backend -f"
-echo "  - View update logs: sudo journalctl -u kis-update -f"
-echo "  - Check timer status: sudo systemctl list-timers kis-update.timer"
-echo "  - Manual update: sudo systemctl start kis-update"
 echo "  - Restart backend: sudo systemctl restart kis-backend"
 echo "  - Restart nginx: sudo systemctl restart nginx"

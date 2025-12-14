@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD
 
 on:
   push:
@@ -68,3 +68,35 @@ jobs:
 
       - name: Build
         run: npm run build
+
+  deploy:
+    needs: [backend, frontend]
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to Lightsail
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 54.180.156.86
+          username: admin
+          key: ${{ secrets.LIGHTSAIL_SSH_KEY }}
+          script: |
+            cd /var/www/kis
+            git pull origin master || git pull origin main
+
+            # Backend
+            cd /var/www/kis/backend
+            ~/.local/bin/uv sync
+            ~/.local/bin/uv run python manage.py migrate --noinput
+            ~/.local/bin/uv run python manage.py collectstatic --noinput
+
+            # Frontend
+            cd /var/www/kis/frontend
+            npm ci
+            npm run build
+            rm -rf /var/www/kis/frontend-serve
+            cp -r dist /var/www/kis/frontend-serve
+
+            # Restart backend
+            sudo systemctl restart kis-backend
