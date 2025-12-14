@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     # Third-party apps
     "rest_framework",
     "rest_framework_simplejwt",
+    "drf_spectacular",
     "corsheaders",
     # Local apps
     "apps.users",
@@ -103,6 +104,22 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+# drf-spectacular configuration
+SPECTACULAR_SETTINGS = {
+    "TITLE": "KIS API",
+    "DESCRIPTION": "KIS Backend API Documentation",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "COMPONENT_SPLIT_REQUEST": True,
+    "SECURITY": [{"Bearer": []}],
+    "SWAGGER_UI_SETTINGS": {
+        "deepLinking": True,
+        "persistAuthorization": True,
+        "displayOperationId": False,
+    },
 }
 
 # Simple JWT configuration

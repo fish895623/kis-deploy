@@ -3,12 +3,19 @@ User views for KIS project.
 """
 
 from django.contrib.auth.models import User
-from rest_framework import generics, status
+from drf_spectacular.utils import OpenApiResponse, extend_schema
+from rest_framework import generics, serializers, status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .serializers import ChangePasswordSerializer, RegisterSerializer, UserSerializer
+
+
+class MessageResponseSerializer(serializers.Serializer):
+    """Serializer for simple message responses."""
+
+    message = serializers.CharField()
 
 
 class RegisterView(generics.CreateAPIView):
@@ -44,6 +51,13 @@ class ChangePasswordView(APIView):
 
     permission_classes = [IsAuthenticated]
 
+    @extend_schema(
+        request=ChangePasswordSerializer,
+        responses={
+            200: OpenApiResponse(response=MessageResponseSerializer, description="Password changed successfully"),
+            400: OpenApiResponse(description="Invalid request or wrong password"),
+        },
+    )
     def post(self, request):
         serializer = ChangePasswordSerializer(data=request.data)
         if serializer.is_valid():
