@@ -1,0 +1,15 @@
+[Unit]
+Description=KIS Auto Update Service
+After=network.target
+
+[Service]
+Type=oneshot
+User=admin
+Group=admin
+WorkingDirectory=/var/www/kis
+ExecStart=/var/www/kis/deploy/update.sh
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
