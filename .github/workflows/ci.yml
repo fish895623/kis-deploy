@@ -69,13 +69,27 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Upload frontend build artifact
+        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: frontend/dist
+          retention-days: 1
+
   deploy:
     needs: [backend, frontend]
     if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy to Lightsail
+      - name: Download frontend build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-dist
+          path: frontend-dist
+
+      - name: Deploy backend via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: 54.180.156.86
@@ -91,12 +105,19 @@ jobs:
             ~/.local/bin/uv run python manage.py migrate --noinput
             ~/.local/bin/uv run python manage.py collectstatic --noinput
 
-            # Frontend
-            cd /var/www/kis/frontend
-            npm ci
-            npm run build
+            # Prepare for frontend deployment
             rm -rf /var/www/kis/frontend-serve
-            cp -r dist /var/www/kis/frontend-serve
+            mkdir -p /var/www/kis/frontend-serve
 
             # Restart backend
             sudo systemctl restart kis-backend
+
+      - name: Deploy frontend build to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: 54.180.156.86
+          username: admin
+          key: ${{ secrets.LIGHTSAIL_SSH_KEY }}
+          source: "frontend-dist/*"
+          target: /var/www/kis/frontend-serve
+          strip_components: 1
