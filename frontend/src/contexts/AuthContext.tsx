@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, type ReactNode } from 'react';
-import { isAuthenticated, clearTokens } from '../api/client';
+import { isAuthenticated, clearTokens } from '../api/openapi-client';
 import { getProfile, login as apiLogin, logout as apiLogout } from '../api/auth';
-import type { LoginCredentials, User } from '../types/auth';
+import type { User, TokenObtainPairRequest } from '../api/auth';
 import { AuthContext } from './auth';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -39,7 +39,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, [refreshUser]);
 
-  const login = useCallback(async (credentials: LoginCredentials) => {
+  const login = useCallback(async (credentials: TokenObtainPairRequest) => {
     await apiLogin(credentials);
     await refreshUser();
   }, [refreshUser]);
