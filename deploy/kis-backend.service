@@ -7,7 +7,7 @@ User=admin
 Group=admin
 WorkingDirectory=/var/www/kis/backend
 Environment="DJANGO_SETTINGS_MODULE=config.settings.production"
-EnvironmentFile=/var/www/kis/.env
+EnvironmentFile=-/var/www/kis/backend/.env
 ExecStart=/var/www/kis/backend/.venv/bin/gunicorn config.wsgi:application -c /var/www/kis/deploy/gunicorn.conf.py
 ExecReload=/bin/kill -s HUP $MAINPID
 Restart=always
