@@ -6,23 +6,23 @@ import { useAuth } from "@/hooks/useAuth"
 const DashboardLayout = lazy(() =>
   import("@/components/dashboard-layout").then((m) => ({ default: m.DashboardLayout }))
 )
-const LoginPage = lazy(() =>
-  import("@/pages/login").then((m) => ({ default: m.LoginPage }))
-)
+const LoginPage = lazy(() => import("@/pages/login").then((m) => ({ default: m.LoginPage })))
 const DashboardPage = lazy(() =>
   import("@/pages/dashboard").then((m) => ({ default: m.DashboardPage }))
 )
 const AnalyticsPage = lazy(() =>
   import("@/pages/analytics").then((m) => ({ default: m.AnalyticsPage }))
 )
-const UsersPage = lazy(() =>
-  import("@/pages/users").then((m) => ({ default: m.UsersPage }))
-)
+const UsersPage = lazy(() => import("@/pages/users").then((m) => ({ default: m.UsersPage })))
 const DocumentsPage = lazy(() =>
   import("@/pages/documents").then((m) => ({ default: m.DocumentsPage }))
 )
 const SettingsPage = lazy(() =>
   import("@/pages/settings").then((m) => ({ default: m.SettingsPage }))
+)
+
+const AccountSettingsPage = lazy(() =>
+  import("@/pages/account-settings").then((m) => ({ default: m.AccountSettings }))
 )
 
 function LoadingScreen() {
@@ -56,6 +56,7 @@ export function AppRouter() {
           <Route path="users" element={<UsersPage />} />
           <Route path="documents" element={<DocumentsPage />} />
           <Route path="settings" element={<SettingsPage />} />
+          <Route path="account-settings" element={<AccountSettingsPage />} />
         </Route>
 
         {/* Catch-all redirect */}

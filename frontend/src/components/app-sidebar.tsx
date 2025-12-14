@@ -1,12 +1,5 @@
 import { Link, useLocation } from "react-router-dom"
-import {
-  LayoutDashboard,
-  Settings,
-  Users,
-  FileText,
-  BarChart3,
-  LogOut,
-} from "lucide-react"
+import { LayoutDashboard, Settings, Users, FileText, BarChart3, LogOut, UserCog } from "lucide-react"
 
 import {
   Sidebar,
@@ -52,10 +45,18 @@ const navItems = [
     url: "/dashboard/documents",
     icon: FileText,
   },
+]
+
+const settingsItems = [
   {
     title: "Settings",
     url: "/dashboard/settings",
     icon: Settings,
+  },
+  {
+    title: "Account",
+    url: "/dashboard/account-settings",
+    icon: UserCog,
   },
 ]
 
@@ -63,9 +64,7 @@ export function AppSidebar() {
   const location = useLocation()
   const { user, logout } = useAuth()
 
-  const initials = user?.username
-    ? user.username.slice(0, 2).toUpperCase()
-    : "U"
+  const initials = user?.username ? user.username.slice(0, 2).toUpperCase() : "U"
 
   return (
     <Sidebar collapsible="icon">
@@ -79,9 +78,7 @@ export function AppSidebar() {
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">KIS Dashboard</span>
-                  <span className="truncate text-xs text-muted-foreground">
-                    Management
-                  </span>
+                  <span className="truncate text-xs text-muted-foreground">Management</span>
                 </div>
               </Link>
             </SidebarMenuButton>
@@ -111,6 +108,28 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Settings</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {settingsItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={location.pathname === item.url}
+                    tooltip={item.title}
+                  >
+                    <Link to={item.url}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
 
       <SidebarFooter>
@@ -123,17 +142,11 @@ export function AppSidebar() {
                   className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                 >
                   <Avatar className="size-8">
-                    <AvatarFallback className="text-xs">
-                      {initials}
-                    </AvatarFallback>
+                    <AvatarFallback className="text-xs">{initials}</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-semibold">
-                      {user?.username}
-                    </span>
-                    <span className="truncate text-xs text-muted-foreground">
-                      {user?.email}
-                    </span>
+                    <span className="truncate font-semibold">{user?.username}</span>
+                    <span className="truncate text-xs text-muted-foreground">{user?.email}</span>
                   </div>
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
@@ -143,6 +156,12 @@ export function AppSidebar() {
                 align="start"
                 sideOffset={4}
               >
+                <DropdownMenuItem asChild>
+                  <Link to="/dashboard/account-settings">
+                    <UserCog className="mr-2 size-4" />
+                    Account
+                  </Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link to="/dashboard/settings">
                     <Settings className="mr-2 size-4" />
