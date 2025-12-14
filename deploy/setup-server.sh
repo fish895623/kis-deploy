@@ -31,15 +31,15 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # Create directory structure
 echo "Creating directory structure..."
-sudo mkdir -p /var/www/kis/frontend
+sudo mkdir -p /var/www
 sudo mkdir -p /var/log/kis
-sudo chown -R admin:admin /var/www/kis
+sudo chown -R admin:admin /var/www
 sudo chown -R admin:admin /var/log/kis
 
 # Clone repository (if not already cloned)
 if [ ! -d "/var/www/kis/.git" ]; then
     echo "Cloning repository..."
-    sudo rm -rf /var/www/kis
+    rm -rf /var/www/kis 2>/dev/null || true
     git clone "$REPO_URL" /var/www/kis
 else
     echo "Repository already exists, pulling latest..."
