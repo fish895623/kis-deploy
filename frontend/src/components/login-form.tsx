@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 
-interface LoginFormProps extends React.ComponentProps<"form"> {
+interface LoginFormProps extends Omit<React.ComponentProps<"form">, "onSubmit"> {
   onSubmit: (credentials: { username: string; password: string }) => Promise<void>;
   error?: string;
 }
