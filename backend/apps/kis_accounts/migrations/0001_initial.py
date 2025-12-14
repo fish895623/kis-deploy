@@ -4,21 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='KISAccounts',
+            name="KISAccounts",
             fields=[
-                ('id', models.BigAutoField(primary_key=True, serialize=False)),
-                ('account_number', models.CharField(help_text='계좌번호', unique=True)),
-                ('account_id', models.CharField(help_text='실계좌 id')),
-                ('app_key', models.CharField(max_length=36)),
-                ('sec_key', models.CharField(max_length=180)),
+                ("id", models.BigAutoField(primary_key=True, serialize=False)),
+                ("account_number", models.CharField(help_text="계좌번호", unique=True)),
+                ("account_id", models.CharField(help_text="실계좌 id")),
+                ("app_key", models.CharField(max_length=36)),
+                ("sec_key", models.CharField(max_length=180)),
             ],
         ),
     ]
