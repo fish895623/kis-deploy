@@ -4,6 +4,82 @@
  */
 
 export interface paths {
+    "/api/kis/accounts/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * KIS 계좌 목록 조회
+         * @description 현재 로그인한 사용자의 KIS 계좌 목록을 조회합니다.
+         */
+        get: operations["kis_accounts_list"];
+        put?: never;
+        /**
+         * KIS 계좌 생성
+         * @description 새로운 KIS 계좌를 등록합니다.
+         */
+        post: operations["kis_accounts_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/kis/accounts/{id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * KIS 계좌 상세 조회
+         * @description 특정 KIS 계좌의 상세 정보를 조회합니다.
+         */
+        get: operations["kis_accounts_retrieve"];
+        /**
+         * KIS 계좌 전체 수정
+         * @description KIS 계좌 정보를 전체 수정합니다.
+         */
+        put: operations["kis_accounts_update"];
+        post?: never;
+        /**
+         * KIS 계좌 삭제
+         * @description KIS 계좌를 삭제합니다.
+         */
+        delete: operations["kis_accounts_destroy"];
+        options?: never;
+        head?: never;
+        /**
+         * KIS 계좌 부분 수정
+         * @description KIS 계좌 정보를 부분 수정합니다.
+         */
+        patch: operations["kis_accounts_partial_update"];
+        trace?: never;
+    };
+    "/api/kis/accounts/check_exists/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 계좌 존재 여부 확인
+         * @description 사용자가 등록한 KIS 계좌가 있는지 확인합니다.
+         */
+        get: operations["kis_accounts_check_exists_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/token/": {
         parameters: {
             query?: never;
@@ -124,9 +200,53 @@ export interface components {
             old_password: string;
             new_password: string;
         };
+        /** @description KIS 계좌 정보 시리얼라이저 */
+        KISAccount: {
+            readonly id: number;
+            /** @description 계좌번호 */
+            account_number: string;
+            /** @description 실계좌 id */
+            account_id: string;
+            app_key: string;
+            sec_key: string;
+            /** Format: date-time */
+            readonly created_at: string;
+            /** Format: date-time */
+            readonly updated_at: string;
+        };
+        /** @description KIS 계좌 목록용 시리얼라이저 (보안 정보 제외) */
+        KISAccountList: {
+            readonly id: number;
+            /** @description 계좌번호 */
+            account_number: string;
+            /** @description 실계좌 id */
+            account_id: string;
+            /** Format: date-time */
+            readonly created_at: string;
+            /** Format: date-time */
+            readonly updated_at: string;
+        };
+        /** @description KIS 계좌 정보 시리얼라이저 */
+        KISAccountRequest: {
+            /** @description 계좌번호 */
+            account_number: string;
+            /** @description 실계좌 id */
+            account_id: string;
+            app_key: string;
+            sec_key: string;
+        };
         /** @description Serializer for simple message responses. */
         MessageResponse: {
             message: string;
+        };
+        /** @description KIS 계좌 정보 시리얼라이저 */
+        PatchedKISAccountRequest: {
+            /** @description 계좌번호 */
+            account_number?: string;
+            /** @description 실계좌 id */
+            account_id?: string;
+            app_key?: string;
+            sec_key?: string;
         };
         /** @description Serializer for user profile information. */
         PatchedUserRequest: {
@@ -217,6 +337,164 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    kis_accounts_list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["KISAccountList"][];
+                };
+            };
+        };
+    };
+    kis_accounts_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["KISAccountRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["KISAccountRequest"];
+                "multipart/form-data": components["schemas"]["KISAccountRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["KISAccount"];
+                };
+            };
+        };
+    };
+    kis_accounts_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["KISAccount"];
+                };
+            };
+        };
+    };
+    kis_accounts_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["KISAccountRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["KISAccountRequest"];
+                "multipart/form-data": components["schemas"]["KISAccountRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["KISAccount"];
+                };
+            };
+        };
+    };
+    kis_accounts_destroy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    kis_accounts_partial_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedKISAccountRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedKISAccountRequest"];
+                "multipart/form-data": components["schemas"]["PatchedKISAccountRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["KISAccount"];
+                };
+            };
+        };
+    };
+    kis_accounts_check_exists_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["KISAccount"];
+                };
+            };
+        };
+    };
     token_create: {
         parameters: {
             query?: never;

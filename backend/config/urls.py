@@ -26,4 +26,6 @@ urlpatterns = [
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     # User endpoints
     path("api/users/", include("apps.users.urls")),
+    # KIS Account endpoints
+    path("api/kis/", include("apps.kis_account.urls")),
 ]
